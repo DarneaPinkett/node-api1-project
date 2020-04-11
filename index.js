@@ -29,3 +29,13 @@ server.post('/users', (req, res) => {
     })
     res.status(201).json(newUser)
 })
+
+server.delete('/users/:id', (req, res) => {
+    const deletedUser = db.getUserById(req.params.id)
+    if(!deletedUser) {
+        db.deleteUser(user.id)
+        res.status(204).end()
+    } else {
+        res.status(404).json({message:"That userID does not exsit".})
+    }
+})
