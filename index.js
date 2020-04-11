@@ -14,12 +14,18 @@ server.get('/', (req, res) => {
     res.send('Hello You!')
 });
 
-server.get('/api/users', (req, res) => {
-    db.find()
-    .then(user => {
-        res.status(200).json({user})
+server.get('/users', (req, res) => {
+    const users = db.getUsers();
+    res.json(users);
+})
+
+server.post('/users', (req, res) => {
+    if(!req.body.name || req.body.bio) {
+        res.status(400).json({Error:"Enter name and bio"})
+    }
+    const newUser = db.createUser({
+        name: req. body.name,
+        bio: req.body.bio
     })
-    .catch(err => {
-        res.status(500).json({success:false, err});
-    });
+    res.status(201).json(newUser)
 })
